@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bravo, Enquêteur ! – Kill Event</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #050505;
+      --gold: #D4AF37;
+      --accent: #DA4F40;
+      --deep-red: #7B0C05;
+      --text: #f5f5f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, #1c1c1c 0, #000 40%, #000 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      border-radius: 28px;
+      padding: 28px 24px 26px;
+      background:
+        radial-gradient(circle at 0 0, rgba(122, 12, 5, 0.35), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(218, 79, 64, 0.3), transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.22), transparent 60%),
+        linear-gradient(135deg, rgba(0, 0, 0, 0.96), rgba(10, 10, 10, 0.98));
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.9),
+        0 0 55px rgba(212, 175, 55, 0.2),
+        0 0 90px rgba(122, 12, 5, 0.45);
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 0, rgba(255,255,255,0.04), transparent 50%),
+        radial-gradient(circle at 85% 100%, rgba(0,0,0,0.3), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.8;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-wrap img {
+      height: 52px;
+      width: auto;
+      filter:
+        drop-shadow(0 0 12px rgba(0, 0, 0, 0.9))
+        drop-shadow(0 0 18px rgba(212, 175, 55, 0.5));
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .brand-tagline {
+      font-size: 0.8rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(245,245,245,0.7);
+    }
+
+    .icon-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 10px 4px 4px;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      background: radial-gradient(circle at top, rgba(212,175,55,0.25), rgba(0,0,0,0.95));
+      gap: 8px;
+    }
+
+    .icon-badge img {
+      height: 32px;
+      width: auto;
+      filter:
+        drop-shadow(0 0 10px rgba(0,0,0,0.9))
+        drop-shadow(0 0 16px rgba(218,79,64,0.65));
+    }
+
+    .icon-badge span {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(245,245,245,0.85);
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+      gap: 24px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 780px) {
+      .main {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .icon-badge {
+        align-self: flex-start;
+      }
+    }
+
+    .content-card {
+      padding: 20px 18px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.06), rgba(0,0,0,0.98));
+      backdrop-filter: blur(6px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle, rgba(218,79,64,0.18), transparent 60%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .content-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.6);
+      background: radial-gradient(circle at top, rgba(212,175,55,0.16), rgba(0,0,0,0.9));
+      margin-bottom: 10px;
+      color: rgba(245,245,245,0.9);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent), var(--deep-red));
+      box-shadow: 0 0 10px rgba(218,79,64,0.9);
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--accent);
+    }
+
+    .lead {
+      font-size: 0.98rem;
+      margin-bottom: 14px;
+      line-height: 1.7;
+      color: rgba(245,245,245,0.96);
+    }
+
+    .lead strong {
+      color: var(--gold);
+    }
+
+    .body-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(245,245,245,0.9);
+      margin-bottom: 18px;
+    }
+
+    .body-text em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-main {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--gold), var(--accent));
+      color: #000;
+      box-shadow:
+        0 0 14px rgba(212,175,55,0.75),
+        0 0 28px rgba(0,0,0,0.9);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.07);
+      box-shadow:
+        0 0 16px rgba(212,175,55,0.9),
+        0 0 32px rgba(0,0,0,1);
+    }
+
+    .btn-main:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 0 10px rgba(0,0,0,0.85);
+    }
+
+    .cta-note {
+      font-size: 0.82rem;
+      color: rgba(245,245,245,0.75);
+    }
+
+    .cta-note span {
+      color: var(--gold);
+    }
+
+    .visual-card {
+      position: relative;
+      border-radius: 22px;
+      padding: 18px 14px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,0.16), rgba(0,0,0,0.97));
+      overflow: hidden;
+    }
+
+    .visual-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 70% 0, rgba(218,79,64,0.35), transparent 65%),
+        radial-gradient(circle at 0 100%, rgba(0,0,0,0.8), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .visual-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mascot-wrap {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    .mascot-wrap::before {
+      content: "";
+      position: absolute;
+      bottom: 16px;
+      width: 70%;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(0,0,0,0.95), transparent 70%);
+      opacity: 0.9;
+    }
+
+    .mascot-wrap img {
+      max-height: 180px;
+      width: auto;
+      filter:
+        drop-shadow(0 0 10px rgba(0,0,0,0.9))
+        drop-shadow(0 0 18px rgba(212,175,55,0.5));
+      transform: translateY(4px);
+    }
+
+    .visual-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(245,245,245,0.85);
+      margin-top: 4px;
+    }
+
+    .visual-sub {
+      font-size: 0.82rem;
+      color: rgba(245,245,245,0.78);
+      text-align: center;
+      max-width: 260px;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: rgba(245,245,245,0.65);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-wrap">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0726/0690/8753/files/kill_event_google_db75b104-5605-44cb-862c-9b2d1d5261a0.png?v=1730289271"
+          alt="Kill Event Logo"
+        >
+        <div class="header-text">
+          <div class="brand-name">Kill&nbsp;Event</div>
+          <div class="brand-tagline">Murder Party &amp; Enquêtes Immersives</div>
+        </div>
+      </div>
+
+      <div class="icon-badge">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0726/0690/8753/files/Design_sans_titre_-_2025-10-13T100105.974.png?v=1760342536"
+          alt="Icône Enquête"
+        >
+        <span>Accès Autorisé</span>
+      </div>
+    </header>
+
+    <section class="main">
+      <div class="content-card">
+        <div class="content-inner">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Fin de l’énigme · Début de la partie</span>
+          </div>
+
+          <h1>
+            Bravo&nbsp;!
+            <span>Vous avez déchiffré l’énigme</span>
+          </h1>
+
+          <p class="lead">
+            Les gardes, <strong>impressionnés par votre perspicacité</strong>, vous ont laissé entrer.
+          </p>
+
+          <p class="body-text">
+            Vous pouvez maintenant <strong>participer à la Murder Party</strong>.  
+            Préparez-vous à <em>interroger les autres suspects</em>, recouper les alibis, analyser les indices
+            et dévoiler, pas à pas, le mystère qui se cache derrière cette affaire.
+          </p>
+
+          <p class="body-text">
+            Gardez l’œil ouvert, méfiez-vous des apparences…  
+            À partir de maintenant, chaque détail compte.
+          </p>
+
+          <div class="cta-row">
+            <a href="https://kill-event.com" class="btn-main">
+              Participer à la Murder Party
+            </a>
+            <div class="cta-note">
+              Vous êtes prêts à rejoindre le reste des <span>suspects</span>…
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="visual-card">
+        <div class="visual-inner">
+          <div class="mascot-wrap">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0726/0690/8753/files/mascotte_fond_transparent-min.png?v=1760630439"
+              alt="Mascotte Kill Event"
+            >
+          </div>
+          <div class="visual-title">Jack Event vous observe</div>
+          <div class="visual-sub">
+            Votre sens de la déduction vient de vous ouvrir les portes.
+            Reste à découvrir si vous saurez aller jusqu’au bout de l’enquête…
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      Murder Party <span>Kill Event</span> · Enquête en cours
+    </footer>
+  </div>
+</body>
+</html>
